@@ -235,6 +235,9 @@ class ExtendedImageEditorState extends State<ExtendedImageEditor> {
       return;
     }
     double totalScale = _startingScale * details.scale * _editorConfig!.speed;
+    if (totalScale < 1.0) {
+      totalScale = 1.0;
+    }
     final Offset delta =
         details.focalPoint * _editorConfig!.speed - _startingOffset;
     final double scaleDelta = details.scale / _detailsScale;
