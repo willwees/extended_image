@@ -411,6 +411,7 @@ class EditorConfig {
     this.initialFlipX,
     this.initialFlipY,
     this.initialCropRect,
+    this.initialScale,
     this.reverseMousePointerScrollDirection = false,
   })  : assert(lineHeight > 0.0),
         assert(hitTestSize > 0.0),
@@ -469,6 +470,9 @@ class EditorConfig {
 
   /// Speed for zoom/pan
   final double speed;
+
+  /// initial zoom scale
+  final double? initialScale;
 
   /// initial crop rect
   final Rect? initialCropRect;

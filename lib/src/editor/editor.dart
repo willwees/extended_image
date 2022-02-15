@@ -53,8 +53,8 @@ class ExtendedImageEditorState extends State<ExtendedImageEditor> {
 
     _editActionDetails ??= EditActionDetails()
       ..delta = Offset.zero
-      ..totalScale = 1.0
-      ..preTotalScale = 1.0
+      ..totalScale = _editorConfig!.initialScale ?? 1.0
+      ..preTotalScale = _editorConfig!.initialScale ?? 1.0
       ..cropRectPadding = _editorConfig!.cropRectPadding
       ..initialCropRect = _editorConfig!.initialCropRect
       ..initialRotateAngle = _editorConfig!.initialRotateAngle
@@ -159,7 +159,7 @@ class ExtendedImageEditorState extends State<ExtendedImageEditor> {
                     var imageWidth = widget.extendedImageState.extendedImageInfo!.image.width;
                     var imageHeight = widget.extendedImageState.extendedImageInfo!.image.height;
                     var topSame = cropRect.top.toInt() == destinationRect.top.toInt();
-                    var scale = (topSame ? imageHeight : imageWidth) / (topSame ? savedRect.height : savedRect.width);
+                    var scale = _editorConfig!.initialScale ?? (topSame ? imageHeight : imageWidth) / (topSame ? savedRect.height : savedRect.width);
                     var ratio = scale * (topSame ? (cropRect.height / imageHeight) : (cropRect.width / imageWidth));
                     var x = imageWidth / 2 * ratio - cropRect.width / 2;
                     var xOffset = x - savedRect.left * ratio;
