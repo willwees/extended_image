@@ -390,6 +390,7 @@ EditorConfig
 | animationDuration      | auto center animation duration                                     | Duration(milliseconds: 200)                                  |
 | tickerDuration         | duration to begin auto center animation after crop rect is changed | Duration(milliseconds: 400)                                  |
 | cropAspectRatio        | aspect ratio of crop rect                                          | null(custom)                                                 |
+| initialCropAspectRatio | initial aspect ratio of crop rect                                  | null(custom: initial crop rect will fill the entire image)   |
 | initCropRectType       | init crop rect base on initial image rect or image layout rect     | imageRect                                                    |
 | cornerPainter          | corner shape                                                       | ExtendedImageCropLayerPainterNinetyDegreesCorner()           |
 | hitTestBehavior        | How to behave during hit tests                                     | HitTestBehavior.deferToChild                                 |
@@ -936,7 +937,7 @@ You can reduce memory usage with following settings now.
 | parameter                                                | description                                                  | default   |
 | -------------------------------------------------------- | ------------------------------------------------------------ | --------- |
 | [ExtendedResizeImage.compressionRatio]                   | The image`s size will resize to original * [compressionRatio].It's ExtendedResizeImage`s first pick.The compressionRatio`s range is from 0.0 (exclusive), to 1.0 (exclusive). | null      |
-| [ExtendedResizeImage.maxBytes]                           | [ExtendedResizeImage] will compress the image to a size that is smaller than [maxBytes]. The default size is 500KB. | 500 << 10 |
+| [ExtendedResizeImage.maxBytes]                           | [ExtendedResizeImage] will compress the image to a size that is smaller than [maxBytes]. The default size is 50KB. It's actual bytes of Image, not decode bytes | 50 << 10 |
 | [ExtendedResizeImage.width]/[ExtendedResizeImage.height] | The width/height the image should decode to and cache. It's same as [ResizeImage], | null      |
 
 ```dart

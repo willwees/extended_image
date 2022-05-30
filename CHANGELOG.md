@@ -1,3 +1,35 @@
+## 6.2.1
+
+* Add DeviceGestureSettings for ExtendedVerticalDragGestureRecognizer and ExtendedHorizontalDragGestureRecognizer.(#482,#483)
+
+## 6.2.0
+
+* Migrate to 3.0.0
+
+## 6.1.0
+
+* override == and hashCode for ExtendedResizeImage
+* fix issue that ExtendedResizeImage can't get rawImageData(#477)
+* ExtendedResizeImage.maxBytes is actual bytes of Image, not decode bytes.
+* fix issue that max scale look bigger after zoom in and zoom out (#476)
+
+## 6.0.3
+
+* Improve:
+  add [EditorConfig.initialCropAspectRatio] to support to set initial CropAspectRatio(#462 It's good for that you can set initial CropAspectRatio at first time and set CropAspectRatio to custom, so that the users can change CropAspectRatio as they want). 
+
+
+## 6.0.2+1
+
+* Issues:
+  1. Hide `FileImage` from `extended_image_library` explicitly.
+
+## 6.0.2
+
+* Issues:
+  1. Remove the deprecated constructor for the `ExtendedVelocityTracker`. (#460)
+  2. Hide `File` from `extended_image_library` explicitly.
+
 ## 6.0.1
 
 * Issues:

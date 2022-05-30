@@ -47,6 +47,7 @@ class ExtendedImageEditorState extends State<ExtendedImageEditor> {
             .extendedImageState.imageWidget.initEditorConfigHandler
             ?.call(widget.extendedImageState) ??
         EditorConfig();
+
     if (cropAspectRatio != _editorConfig!.cropAspectRatio) {
       _editActionDetails = null;
     }
@@ -122,6 +123,17 @@ class ExtendedImageEditorState extends State<ExtendedImageEditor> {
                 editAction!.layoutRectOther = layoutRect;
 
                 if (_editActionDetails!.cropRect == null) {
+                  final AlignmentGeometry alignment =
+                      widget.extendedImageState.imageWidget.alignment;
+                  //matchTextDirection: extendedImage.matchTextDirection,
+                  //don't support TextDirection for editor
+                  final TextDirection? textDirection =
+                      //extendedImage.matchTextDirection ||
+                      alignment is! Alignment
+                          ? Directionality.of(context)
+                          : null;
+                  final Alignment resolvedAlignment =
+                      alignment.resolve(textDirection);
                   final Rect destinationRect = getDestinationRect(
                       rect: layoutRect,
                       inputSize: Size(
@@ -135,8 +147,7 @@ class ExtendedImageEditorState extends State<ExtendedImageEditor> {
                       fit: widget.extendedImageState.imageWidget.fit,
                       centerSlice:
                           widget.extendedImageState.imageWidget.centerSlice,
-                      alignment:
-                          widget.extendedImageState.imageWidget.alignment,
+                      alignment: resolvedAlignment,
                       scale:
                           widget.extendedImageState.extendedImageInfo!.scale);
 
@@ -166,13 +177,13 @@ class ExtendedImageEditorState extends State<ExtendedImageEditor> {
                     var y = imageHeight / 2 * ratio - cropRect.height / 2;
                     var yOffset = y - savedRect.top * ratio;
 
-                    WidgetsBinding.instance!.addPostFrameCallback((_) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
                       setState(() {
                         _editActionDetails!.totalScale = scale;
                         _editActionDetails!.preTotalScale = scale;
                         _editActionDetails!.delta = Offset(xOffset, yOffset);
                       });
-                      WidgetsBinding.instance!.addPostFrameCallback((_) {
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
                         // not sure why this is needed but it fixes a bug where the crop rect doesn't get updated
                         setState(() {});
                       });
@@ -208,17 +219,31 @@ class ExtendedImageEditorState extends State<ExtendedImageEditor> {
   }
 
   Rect _initCropRect(Rect rect) {
-    Rect cropRect = _editActionDetails!.getRectWithScale(rect, 1.0);
-
     if (_editActionDetails!.cropAspectRatio != null) {
-      final double aspectRatio = _editActionDetails!.cropAspectRatio!;
-      double width = cropRect.width / aspectRatio;
-      final double height = min(cropRect.height, width);
-      width = height * aspectRatio;
-      cropRect = Rect.fromCenter(
-          center: cropRect.center, width: width, height: height);
+      return _calculateCropRectFromAspectRatio(
+        rect,
+        _editActionDetails!.cropAspectRatio!,
+      );
     }
-    return cropRect;
+    if (_editorConfig!.initialCropAspectRatio != null) {
+      return _calculateCropRectFromAspectRatio(
+        rect,
+        _editorConfig!.initialCropAspectRatio!,
+      );
+    }
+    return _editActionDetails!.getRectWithScale(rect);
+  }
+
+  Rect _calculateCropRectFromAspectRatio(Rect rect, double aspectRatio) {
+    final Rect cropRect = _editActionDetails!.getRectWithScale(rect);
+    final double height = min(cropRect.height, cropRect.width / aspectRatio);
+    final double width = height * aspectRatio;
+
+    return Rect.fromCenter(
+      center: cropRect.center,
+      width: width,
+      height: height,
+    );
   }
 
   void _handleScaleStart(ScaleStartDetails details) {
