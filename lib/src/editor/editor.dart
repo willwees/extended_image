@@ -231,11 +231,11 @@ class ExtendedImageEditorState extends State<ExtendedImageEditor> {
         _editorConfig!.initialCropAspectRatio!,
       );
     }
-    return _editActionDetails!.getRectWithScale(rect);
+    return _editActionDetails!.getRectWithScale(rect, 1.0);
   }
 
   Rect _calculateCropRectFromAspectRatio(Rect rect, double aspectRatio) {
-    final Rect cropRect = _editActionDetails!.getRectWithScale(rect);
+    final Rect cropRect = _editActionDetails!.getRectWithScale(rect, 1.0);
     final double height = min(cropRect.height, cropRect.width / aspectRatio);
     final double width = height * aspectRatio;
 
